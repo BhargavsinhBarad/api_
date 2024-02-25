@@ -22,13 +22,17 @@ class Api {
     }
   }
 
-  Future<void> postapi({required String email, required String pass}) async {
-    var ans = await http.post(Uri.parse("https://uat.redprix.com/api/login"),
+  Future<Object> postapi({required String email, required String pass}) async {
+    http.Response response = await http.post(
+        Uri.parse("https://uat.redprix.com/api/login"),
         body: {"email": "$email", "password": "$pass"});
-    if (ans.statusCode == 200) {
-      print("${ans.body}");
+    if (response.statusCode == 200) {
+      print("${response.body}");
+      return response.body;
     } else {
-      print("${ans.statusCode}");
+      print("${response.statusCode}");
+      return response;
     }
+
   }
 }

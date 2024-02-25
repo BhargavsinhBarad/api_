@@ -14,19 +14,6 @@ class postapi extends StatelessWidget {
   TextEditingController emailcon = TextEditingController();
   TextEditingController passlcon = TextEditingController();
 
-  Future<void> api({required String email, required String pass}) async {
-    var ans = await http.post(Uri.parse("https://uat.redprix.com/api/login"),
-        body: {"email": "$email", "password": "$pass"});
-    if (ans.statusCode == 200) {
-      print("${ans.body}");
-      Get.snackbar("login ", "successfully");
-      Get.to(() => getapipage());
-    } else {
-      print("${ans.statusCode}");
-      Get.snackbar("login", "failed");
-    }
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -95,10 +82,13 @@ class postapi extends StatelessWidget {
                     height: 35,
                   ),
                   GestureDetector(
-                    onTap: () {
-                      var ans = api(email: email!, pass: password!);
+                    onTap: () async {
+                      var ans =
+                          await Api.api.postapi(email: email!, pass: password!);
+                      log("${ans}");
                       emailcon.clear();
                       passlcon.clear();
+                      Get.to(() => getapipage());
                     },
                     child: Container(
                       height: 60,
